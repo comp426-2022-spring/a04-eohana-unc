@@ -1,0 +1,25 @@
+{
+  "name": "a04-eohana-unc",
+  "version": "1.0.0",
+  "description": "Logging and database server",
+  "main": "server.js",
+  "scripts": {
+    "test": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/comp426-2022-spring/a04-eohana-unc.git"
+  },
+  "keywords": [
+    "databse",
+    "logging",
+    "middleware",
+    "errors"
+  ],
+  "author": "Elad Ohana",
+  "license": "GPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/comp426-2022-spring/a04-eohana-unc/issues"
+  },
+  "homepage": "https://github.com/comp426-2022-spring/a04-eohana-unc#readme"
+}
