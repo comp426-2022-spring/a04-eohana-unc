@@ -25,19 +25,19 @@ function write_server_session(test){
   let string_replacement = {
     "%PORT%": 1024 + Math.floor(Math.random() * (49151 - 1024) )
   };
-  const server_command = `${test["run-command"]} ${join_args(test["args"])}`
+  const server_command=`${test["run-command"]}${join_args(test["args"])}`
   // Add description in file for easy locating
   let result = `# TEST: ${test["description"]}\n`;
   // Display the test being run
   result += `echo "Running session for \${BLUE}${test["test-name"]}\${NC}\\n"\n`;
   // run the command with the args (will replace port at the end)
-  result += `(${test["run-command"]} ${join_args(test["args"])}) > tmpfiles/server_output & sleep 1`; 
+  result += `(${server_command}) > tmpfiles/server_output & sleep 1`; 
   for (let ct of test["client-tests"]){
     result += `${write_client_test(ct)}\n\n`;
   }
 
   if (test["server-persistent"]){
-    result += `ps | grep "node ../server.js --port=%PORT%" | grep -v grep | awk '{print $1}' | read pid\n`;
+    result += `ps | grep "${server_command}" | grep -v grep | awk '{print $1}' | read pid\n`;
     result += `kill $pid\n`;
   }
   result += `expected=$(echo "${test["expected-output"]}")\n`;
@@ -56,12 +56,13 @@ function write_server_session(test){
 }
 
 function write_client_test(test){
+  
   return "\n";
 }
 function join_args(args){
   let result = "";
   for (let arg of args){
-    result += `${arg} `;
+    result += ` ${arg}`;
   }
   return result;
 }

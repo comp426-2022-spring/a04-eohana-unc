@@ -6,12 +6,12 @@ GREEN='\e[1;32m'
 NC='\e[0m'
 # TEST: Run normal server operations
 echo "Running session for ${BLUE}Normal server on random port${NC}\n"
-(node ../server.js --port=38231 ) > tmpfiles/server_output & sleep 1
+(node ../server.js --port=17608) > tmpfiles/server_output & sleep 1
 
 
-ps | grep "node ../server.js --port=38231" | grep -v grep | awk '{print $1}' | read pid
+ps | grep "node ../server.js --port=17608" | grep -v grep | awk '{print $1}' | read pid
 kill $pid
-expected=$(echo "App listening on port 38231")
+expected=$(echo "App listening on port 17608")
 result=$(cat tmpfiles/server_output)
 match="$(echo $result | grep -E $expected)"
 echo "Expected: $expected"
