@@ -1,8 +1,18 @@
 [
     {
-        "description": "",
-        "testname": "",
-        "command": "",
-        "expected": ""
+        "description": "Run normal server operations",
+        "run-command": "node ../server.js",
+        "args": ["--port=%PORT%"],
+        "test-name": "Normal server on random port",
+        "expected-output": "App listening on port %PORT%",
+        "client-tests": [
+            {
+                "description": "Run curl on app/flip",
+                "testname": "app/flip",
+                "address": "http://localhost:%PORT%/app/flip",
+                "args": [],
+                "expected": "(heads|tails)"
+            }
+        ]
     }
 ]
