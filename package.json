@@ -4,7 +4,7 @@
   "description": "Logging and database server",
   "main": "server.js",
   "scripts": {
-    "test": "cd testing ; node test.js ; chmod 755 test.sh ; test.sh ; cd .."
+    "test": "cd testing ; node test.js ; chmod 755 test.sh ; ./test.sh ; cd .."
   },
   "repository": {
     "type": "git",
