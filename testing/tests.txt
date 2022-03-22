@@ -15,3 +15,12 @@ for each server test, there can be many client tests:
 client tests would have:
 command (curl [args] [other stuff?])
 expected result
+
+
+can i get the server and client under one testing function?
+
+need:
+command
+args
+fork?
+tests

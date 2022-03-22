@@ -1,39 +1,77 @@
 [
     
     {
+        "dict": {
+            "%OUTPUT%": "tmpfiles/server_output",
+            "%PORT%": "-*-random-*-1024-*-49151-*-"
+        },
         "description": "Run normal server operations",
-        "run-command": "node ../server.js",
+        "run-command": "node ../server.js %ARGS% > %OUTPUT%",
+        "fork-command": "& sleep 1\n",
         "args": ["--port=%PORT%"],
         "test-name": "Normal server on random port",
+        "kill-command": "ps | grep \"node ../server.js %ARGS%\" | grep -v grep | awk '{print $1}' | read pid\n; kill $pid",
+        "test-command": "cat tmpfiles/server_output",
         "expected": "App listening on port %PORT%",
         "server-persistent": 1,
-        "client-tests": [
+        "sub-tests": [
             {
                 "description": "Run curl on app/flip",
                 "test-name": "app/flip",
-                "address": "http://localhost:%PORT%/app/flip",
-                "args": [],
+                "test-command": "curl %ARGS%",
+                "args": ["http://localhost:%PORT%/app/flip"],
                 "expected": "{['%Q%]?flip['%Q%]?:['%Q%]?(heads|tails)['%Q%]?}"
             },
             {
                 "description": "Get header on app/flip",
                 "test-name": "app/flip header",
-                "address": "http://localhost:%PORT%/app/flip",
-                "args": ["-I"],
+                "test-command": "curl %ARGS%",
+                "args": ["-I", "http://localhost:%PORT%/app/flip"],
                 "expected": "200 OK"
             },
             {
                 "description": "Get not found header",
                 "test-name": "not found header",
-                "address": "http://localhost:%PORT%/app/invalid",
-                "args": ["-I"],
+                "test-command": "curl %ARGS%",
+                "args": ["-I", "http://localhost:%PORT%/app/invalid"],
                 "expected": "404 [Nn][Oo].*[Nn][Dd]"
             },
             {
                 "description": "Get not found",
                 "test-name": "not found",
-                "address": "http://localhost:%PORT%/app/invalid",
-                "args": [],
+                "test-command": "curl %ARGS%",
+                "args": ["http://localhost:%PORT%/app/invalid"],
+                "expected": "404 [Nn][Oo].*[Nn][Dd]"
+            },
+            {
+                "dict": {
+                    "%FLIPS%": "-*-random-*-50-*-150-*-"
+                },
+                "description": "Random flips",
+                "test-name": "Random flips",
+                "test-command": "curl %ARGS%",
+                "args": ["http://localhost:%PORT%/app/flips/%FLIPS%"],
+                "expected": "{['%Q%]?raw['%Q%]?:\\s*\\[((['%Q%]?tails['%Q%]?|['%Q%]?heads['%Q%]?),?){%FLIPS%}\\],\\s*['%Q%]?summary['%Q%]?:{(['%Q%]?tails['%Q%]?:\\d{1,6},?|['%Q%]heads['%Q%]:\\d{1,6},?){1,2}}}"
+            },
+            {
+                "description": "Call Heads",
+                "test-name": "Call heads",
+                "test-command": "curl %ARGS%",
+                "args": ["http://localhost:%PORT%/app/flip/call/heads"],
+                "expected": "(win|lose)"
+            },
+            {
+                "description": "Call Tails",
+                "test-name": "Call tails",
+                "test-command": "curl %ARGS%",
+                "args": ["http://localhost:%PORT%/app/flip/call/tails"],
+                "expected": "(win|lose)"
+            },
+            {
+                "description": "Call invalid",
+                "test-name": "Call invalid",
+                "test-command": "curl %ARGS%",
+                "args": ["http://localhost:%PORT%/app/flip/call/invalid"],
                 "expected": "404 [Nn][Oo].*[Nn][Dd]"
             }
         ]

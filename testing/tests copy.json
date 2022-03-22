@@ -1,0 +1,41 @@
+[
+    
+    {
+        "description": "Run normal server operations",
+        "run-command": "node ../server.js",
+        "args": ["--port=%PORT%"],
+        "test-name": "Normal server on random port",
+        "expected": "App listening on port %PORT%",
+        "server-persistent": 1,
+        "client-tests": [
+            {
+                "description": "Run curl on app/flip",
+                "test-name": "app/flip",
+                "address": "http://localhost:%PORT%/app/flip",
+                "args": [],
+                "expected": "{['%Q%]?flip['%Q%]?:['%Q%]?(heads|tails)['%Q%]?}"
+            },
+            {
+                "description": "Get header on app/flip",
+                "test-name": "app/flip header",
+                "address": "http://localhost:%PORT%/app/flip",
+                "args": ["-I"],
+                "expected": "200 OK"
+            },
+            {
+                "description": "Get not found header",
+                "test-name": "not found header",
+                "address": "http://localhost:%PORT%/app/invalid",
+                "args": ["-I"],
+                "expected": "404 [Nn][Oo].*[Nn][Dd]"
+            },
+            {
+                "description": "Get not found",
+                "test-name": "not found",
+                "address": "http://localhost:%PORT%/app/invalid",
+                "args": [],
+                "expected": "404 [Nn][Oo].*[Nn][Dd]"
+            }
+        ]
+    }
+]
