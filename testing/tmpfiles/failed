@@ -1,1 +1,10 @@
 Failed Tests:
+[1;31mRun help command[0m
+Expected: server.js [options][\s\S]*--port[\s\S]*--debug[\s\S]*--log[\s\S]*--help[\s\S]*
+Result: 
+[1;31m/app/log/access on debug session[0m
+Expected: NEED TO WRITE THIS TEST
+Result: 404 NOT FOUND
+[1;31m/app/error on debug session[0m
+Expected: Error test successful.
+Result: 404 NOT FOUND

@@ -1,6 +1,11 @@
 const express = require('express')
 const app = express()
 const args = require("minimist")(process.argv)
+
+if (args["help"]){
+  process.exit(0)
+}
+
 const coin = require("./modules/coin.js")
 
 const port = args["port"] || 5000
