@@ -93,8 +93,8 @@
         "description": "Run help command",
         "args": ["--help"],
         "test-name": "Run help command",
-        "test-command": "../server.js %ARGS%",
-        "expected": "server.js [options][\\s\\S]*--port[\\s\\S]*--debug[\\s\\S]*--log[\\s\\S]*--help[\\s\\S]*"
+        "test-command": "node ../server.js %ARGS%",
+        "expected": "server\\.js \\[options\\][\\s\\S]*"
     },
     {
         "dict": {

@@ -1,8 +1,12 @@
 const express = require('express')
+const fs = require("fs")
 const app = express()
 const args = require("minimist")(process.argv)
 
 if (args["help"]){
+  const currentdir = process.argv[1].replace("server.js", "")
+  const text = fs.readFileSync(`${currentdir}files/help.txt`, {encoding: "ascii", flag:"r"})
+  console.log(text)
   process.exit(0)
 }
 

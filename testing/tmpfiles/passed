@@ -3,11 +3,12 @@ Passed Tests:
 [1;32mapp/flip header[0m
 [1;32mnot found header[0m
 [1;32mnot found[0m
-[1;32mapp/flips/121 (generated randomly)[0m
+[1;32mapp/flips/59 (generated randomly)[0m
 [1;32mapp/flip/call/heads[0m
 [1;32mapp/flip/call/tails[0m
 [1;32mapp/flip/call/invalid[0m
 [1;32m/app/log/access on non-debug session[0m
 [1;32m/app/error on non-debug session[0m
 [1;32mNormal server on random port[0m
+[1;32mRun help command[0m
 [1;32mserver in debug mode on random port[0m

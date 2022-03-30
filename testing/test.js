@@ -74,7 +74,7 @@ function write_test(test){
 
 function write_evaluation(test){
   let result = `result=\$(${test["test-command"]})\n`;
-  result += `expected=$(echo "${test["expected"]}\\n")\n`;
+  result += `expected=$(echo "${test["expected"]}")\n`;
   result += `match="$(echo $result | grep -E $expected)"\n`;
   result += `[ -n "$match" ] && ( echo "\${GREEN}Passed ${test["test-name"]}\${NC}" && echo "\${GREEN}${test["test-name"]}\${NC}" >> tmpfiles/passed ) || ( echo "\${RED}Failed ${test["test-name"]}\${NC}" &&  echo "\${RED}${test["test-name"]}\${NC}" >> tmpfiles/failed &&
   echo "Expected: $expected" >> tmpfiles/failed && echo "Result: $result" >> tmpfiles/failed ) `;
