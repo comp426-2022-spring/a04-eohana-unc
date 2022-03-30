@@ -1,0 +1,129 @@
+[
+    
+    {
+        "dict": {
+            "%OUTPUT%": "tmpfiles/server_output",
+            "%PORT%": "-*-random-*-1024-*-49151-*-"
+        },
+        "description": "Run normal server operations",
+        "run-command": "node ../server.js %ARGS% > %OUTPUT%",
+        "fork-command": "& sleep 1\n",
+        "args": ["--port=%PORT%"],
+        "test-name": "Normal server on random port",
+        "kill-command": "ps | grep \"node ../server.js %ARGS%\" | grep -v grep | awk '{print $1}' | read pid\n; kill $pid",
+        "test-command": "cat tmpfiles/server_output",
+        "expected": "App listening on port %PORT%",
+        "sub-tests": [
+            {
+                "description": "Run curl on app/flip",
+                "test-name": "app/flip",
+                "test-command": "curl %ARGS%",
+                "args": ["http://localhost:%PORT%/app/flip"],
+                "expected": "{['%Q%]?flip['%Q%]?:['%Q%]?(heads|tails)['%Q%]?}"
+            },
+            {
+                "description": "Get header on app/flip",
+                "test-name": "app/flip header",
+                "test-command": "curl %ARGS%",
+                "args": ["-I", "http://localhost:%PORT%/app/flip"],
+                "expected": "200 OK"
+            },
+            {
+                "description": "Get not found header",
+                "test-name": "not found header",
+                "test-command": "curl %ARGS%",
+                "args": ["-I", "http://localhost:%PORT%/app/invalid"],
+                "expected": "404 [Nn][Oo].*[Nn][Dd]"
+            },
+            {
+                "description": "Get not found",
+                "test-name": "not found",
+                "test-command": "curl %ARGS%",
+                "args": ["http://localhost:%PORT%/app/invalid"],
+                "expected": "404 [Nn][Oo].*[Nn][Dd]"
+            },
+            {
+                "dict": {
+                    "%FLIPS%": "-*-random-*-50-*-150-*-"
+                },
+                "description": "Random flips",
+                "test-name": "app/flips/%FLIPS% (generated randomly)",
+                "test-command": "curl %ARGS%",
+                "args": ["http://localhost:%PORT%/app/flips/%FLIPS%"],
+                "expected": "{['%Q%]?raw['%Q%]?:\\s*\\[((['%Q%]?tails['%Q%]?|['%Q%]?heads['%Q%]?),?){%FLIPS%}\\],\\s*['%Q%]?summary['%Q%]?:{(['%Q%]?tails['%Q%]?:\\d{1,6},?|['%Q%]heads['%Q%]:\\d{1,6},?){1,2}}}"
+            },
+            {
+                "description": "Call Heads",
+                "test-name": "app/flip/call/heads",
+                "test-command": "curl %ARGS%",
+                "args": ["http://localhost:%PORT%/app/flip/call/heads"],
+                "expected": "(win|lose)"
+            },
+            {
+                "description": "Call Tails",
+                "test-name": "app/flip/call/tails",
+                "test-command": "curl %ARGS%",
+                "args": ["http://localhost:%PORT%/app/flip/call/tails"],
+                "expected": "(win|lose)"
+            },
+            {
+                "description": "Call invalid",
+                "test-name": "app/flip/call/invalid",
+                "test-command": "curl %ARGS%",
+                "args": ["http://localhost:%PORT%/app/flip/call/invalid"],
+                "expected": "404 [Nn][Oo].*[Nn][Dd]"
+            },
+            {
+                "description": "Log access",
+                "test-name": "/app/log/access on non-debug session",
+                "test-command": "curl %ARGS%",
+                "args": ["http://localhost:%PORT%/app/log/access"],
+                "expected": "404 [Nn][Oo].*[Nn][Dd]"
+            },
+            {
+                "description": "Log access",
+                "test-name": "/app/error on non-debug session",
+                "test-command": "curl %ARGS%",
+                "args": ["http://localhost:%PORT%/app/error"],
+                "expected": "404 [Nn][Oo].*[Nn][Dd]"
+            }
+        ]
+    },
+    {
+        "description": "Run help command",
+        "args": ["--help"],
+        "test-name": "Run help command",
+        "test-command": "../server.js %ARGS%",
+        "expected": "server.js [options][\\s\\S]*--port[\\s\\S]*--debug[\\s\\S]*--log[\\s\\S]*--help[\\s\\S]*"
+    },
+    {
+        "dict": {
+            "%OUTPUT%": "tmpfiles/server_output",
+            "%PORT%": "-*-random-*-1024-*-49151-*-"
+        },
+        "description": "Run server in debug mode",
+        "run-command": "node ../server.js %ARGS% > %OUTPUT%",
+        "fork-command": "& sleep 1\n",
+        "args": ["--debug=true", "--port=%PORT%"],
+        "test-name": "server in debug mode on random port",
+        "kill-command": "ps | grep \"node ../server.js %ARGS%\" | grep -v grep | awk '{print $1}' | read pid\n; kill $pid",
+        "test-command": "cat tmpfiles/server_output",
+        "expected": "App listening on port %PORT%",
+        "sub-tests": [
+            {
+                "description": "Log access",
+                "test-name": "/app/log/access on debug session",
+                "test-command": "curl %ARGS%",
+                "args": ["http://localhost:%PORT%/app/log/access"],
+                "expected": "NEED TO WRITE THIS TEST"
+            },
+            {
+                "description": "Log access",
+                "test-name": "/app/error on debug session",
+                "test-command": "curl %ARGS%",
+                "args": ["http://localhost:%PORT%/app/error"],
+                "expected": "Error test successful."
+            }
+        ]
+    }
+]

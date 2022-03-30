@@ -1,0 +1,26 @@
+So I want the test to first:
+open server
+test that the output is correct
+run client tests (curl)
+
+
+Server session:
+description
+test name
+run command (node server.js [args])
+expected result
+
+
+for each server test, there can be many client tests:
+client tests would have:
+command (curl [args] [other stuff?])
+expected result
+
+
+can i get the server and client under one testing function?
+
+need:
+command
+args
+fork?
+tests
