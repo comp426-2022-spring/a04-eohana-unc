@@ -115,7 +115,7 @@
                 "test-name": "/app/log/access on debug session",
                 "test-command": "curl %ARGS%",
                 "args": ["http://localhost:%PORT%/app/log/access"],
-                "expected": "NEED TO WRITE THIS TEST"
+                "expected": "\\[\\{['%Q%]id['%Q%]:.{0,40},['%Q%]remoteaddr['%Q%]:.*,['%Q%]remoteuser['%Q%]:.*,.*['%Q%]useragent['%Q%]:.*\\}\\]"
             },
             {
                 "description": "Log access",
@@ -123,6 +123,29 @@
                 "test-command": "curl %ARGS%",
                 "args": ["http://localhost:%PORT%/app/error"],
                 "expected": "Error test successful."
+            }
+        ]
+    },
+    {
+        "dict": {
+            "%OUTPUT%": "tmpfiles/server_output",
+            "%PORT%": "-*-random-*-1024-*-49151-*-"
+        },
+        "description": "Run server in log mode",
+        "run-command": "( cp ../databases/access.log ./ ) & ( node ../server.js %ARGS% > %OUTPUT% )",
+        "fork-command": "& sleep 1\n",
+        "args": ["--log=true", "--port=%PORT%"],
+        "test-name": "server in log mode on random port",
+        "kill-command": "ps | grep \"node ../server.js %ARGS%\" | grep -v grep | awk '{print $1}' | read pid\n; kill $pid",
+        "test-command": "diff ../databases/access.log ./access.log",
+        "expected": ".+",
+        "sub-tests": [
+            {
+                "description": "Log access",
+                "test-name": "/app/log/access on debug session",
+                "test-command": "curl %ARGS%",
+                "args": ["http://localhost:%PORT%/app/log/access"],
+                "expected": "404 NOT FOUND"
             }
         ]
     }

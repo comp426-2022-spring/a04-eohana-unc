@@ -1,7 +1,1 @@
 Failed Tests:
-[1;31m/app/log/access on debug session[0m
-Expected: NEED TO WRITE THIS TEST
-Result: 404 NOT FOUND
-[1;31m/app/error on debug session[0m
-Expected: Error test successful.
-Result: 404 NOT FOUND

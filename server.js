@@ -1,5 +1,5 @@
 const express = require('express')
-// const morgan = require("morgan")
+const morgan = require("morgan")
 
 const fs = require("fs")
 const args = require("minimist")(process.argv)
@@ -17,22 +17,6 @@ if (args["help"]){
 }
 
 
-// const db = require('./database.js')
-
-
-
-// morgan(function (tokens, req, res) {
-//   return [
-//     tokens.method(req, res),
-//     tokens.url(req, res),
-//     tokens.status(req, res),
-//     tokens.res(req, res, 'content-length'), '-',
-//     tokens['response-time'](req, res), 'ms'
-//   ].join(' ')
-// })
-// console.log(coin.coinFlip())
-
-// app.use(morgan(':date :method :url :status :res[content-length] - :response-time ms'))
 app.use((req, res, next) => {
   next()
 
@@ -48,9 +32,8 @@ app.use((req, res, next) => {
     status: res.statusCode || "",
     referer: req.headers['referer'] || "",
     useragent: req.headers['user-agent'] || ""
-}
+  }
 
-// console.log(logdata)
 const dbInsert = (`INSERT INTO log 
     (remoteaddr, remoteuser, time, 
       method, url, protocol, 
@@ -63,23 +46,25 @@ const dbInsert = (`INSERT INTO log
   stmt.run(logdata.remoteaddr, logdata.remoteuser, logdata.time, logdata.method,
     logdata.url, logdata.protocol, logdata.httpversion, logdata.secure, logdata.status,
     logdata.referer, logdata.useragent)
-
-// console.dir(morgan)
-//   const row = db.prepare("SELECT * FROM log WHERE time = ?")
-//  console.log(row.get(logdata.time))
 })
 
 
-// if (args["debug"]){
-//   // console.log("debug mode")
-//   app.get('/app/log/access', (req, res) => {
-//     const stmt = db.prepare("SELECT * FROM log")
-//     const data = stmt.all()
-//     res.statusCode = 200
-//     res.statusMessage = "OK"
-//     res.json(data).end()
-//   })
-// }
+if (args["debug"]=='true'){
+  // console.log("debug mode")
+  app.get('/app/log/access', (req, res) => {
+    const stmt = db.prepare("SELECT * FROM log").all()
+    res.status(200).json(stmt)
+  })
+
+  app.get('/app/error', (req, res) => {
+    res.status(200).end("Error test successful.")
+  })
+}
+
+if (args["log"]=='true'){
+  const writeStream = fs.createWriteStream(`${getpath(process.argv[1])}/databases/access.log`, {flags: 'a'})
+  app.use(morgan ("combined", {stream: writeStream}))
+}
 
 
 app.get('/app', (req, res) => {
