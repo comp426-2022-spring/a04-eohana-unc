@@ -131,8 +131,8 @@
             "%OUTPUT%": "tmpfiles/server_output",
             "%PORT%": "-*-random-*-1024-*-49151-*-"
         },
-        "description": "Run server in log mode",
-        "run-command": "( cp ../databases/access.log ./ ) & ( node ../server.js %ARGS% > %OUTPUT% )",
+        "description": "Run server in log mode (default)",
+        "run-command": "( cp ../access.log ./ ) & ( node ../server.js %ARGS% > %OUTPUT% )",
         "fork-command": "& sleep 1\n",
         "args": ["--log=true", "--port=%PORT%"],
         "test-name": "server in log mode on random port",
@@ -142,7 +142,30 @@
         "sub-tests": [
             {
                 "description": "Log access",
-                "test-name": "/app/log/access on debug session",
+                "test-name": "/app/log/access on non debug session",
+                "test-command": "curl %ARGS%",
+                "args": ["http://localhost:%PORT%/app/log/access"],
+                "expected": "404 NOT FOUND"
+            }
+        ]
+    },
+    {
+        "dict": {
+            "%OUTPUT%": "tmpfiles/server_output",
+            "%PORT%": "-*-random-*-1024-*-49151-*-"
+        },
+        "description": "Run server not in log mode (default)",
+        "run-command": "( cp ../access.log ./ ) & ( node ../server.js %ARGS% > %OUTPUT% )",
+        "fork-command": "& sleep 1\n",
+        "args": ["--log=false", "--port=%PORT%"],
+        "test-name": "server not in log mode on random port",
+        "kill-command": "ps | grep \"node ../server.js %ARGS%\" | grep -v grep | awk '{print $1}' | read pid\n; kill $pid",
+        "test-command": "echo -n 098231 && diff ../access.log ./access.log && echo -n 234524",
+        "expected": "098231234524",
+        "sub-tests": [
+            {
+                "description": "Log access",
+                "test-name": "/app/log/access on non debug session",
                 "test-command": "curl %ARGS%",
                 "args": ["http://localhost:%PORT%/app/log/access"],
                 "expected": "404 NOT FOUND"

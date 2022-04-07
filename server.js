@@ -50,7 +50,7 @@ const dbInsert = (`INSERT INTO log
 })
 
 
-if (args["debug"]=='true'){
+if (args["debug"]=='true' || args["debug"]){
   // console.log("debug mode")
   app.get('/app/log/access', (req, res) => {
     const stmt = db.prepare("SELECT * FROM log").all()
@@ -62,7 +62,7 @@ if (args["debug"]=='true'){
   })
 }
 
-if (args["log"]=='true'){
+if (args["log"]!='false'){
   const writeStream = fs.createWriteStream(`${getpath(process.argv[1])}/${data_path}access.log`, {flags: 'a'})
   app.use(morgan ("combined", {stream: writeStream}))
 }
