@@ -7,6 +7,7 @@ const getpath = require("./getpath.js")
 const db = require("./database.js")
 const coin = require("./modules/coin.js")
 
+const data_path = ""
 const app = express()
 const port = args["port"] || 5000
 
@@ -62,7 +63,7 @@ if (args["debug"]=='true'){
 }
 
 if (args["log"]=='true'){
-  const writeStream = fs.createWriteStream(`${getpath(process.argv[1])}/databases/access.log`, {flags: 'a'})
+  const writeStream = fs.createWriteStream(`${getpath(process.argv[1])}/${data_path}access.log`, {flags: 'a'})
   app.use(morgan ("combined", {stream: writeStream}))
 }
 

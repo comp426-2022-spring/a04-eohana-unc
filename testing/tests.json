@@ -137,7 +137,7 @@
         "args": ["--log=true", "--port=%PORT%"],
         "test-name": "server in log mode on random port",
         "kill-command": "ps | grep \"node ../server.js %ARGS%\" | grep -v grep | awk '{print $1}' | read pid\n; kill $pid",
-        "test-command": "diff ../databases/access.log ./access.log",
+        "test-command": "diff ../access.log ./access.log",
         "expected": ".+",
         "sub-tests": [
             {

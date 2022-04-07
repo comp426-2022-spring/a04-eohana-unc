@@ -2,8 +2,8 @@
 
 const Database = require("better-sqlite3");
 const getpath = require("./getpath.js");
-
-const db = new Database(`${getpath(process.argv[1])}/databases/log.db`);
+const data_path = ""
+const db = new Database(`${getpath(process.argv[1])}/${data_path}log.db`);
 
 const tableName = db.prepare(`SELECT 
   name
