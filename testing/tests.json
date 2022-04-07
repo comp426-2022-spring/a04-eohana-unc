@@ -123,7 +123,15 @@
                 "test-command": "curl %ARGS%",
                 "args": ["http://localhost:%PORT%/app/error"],
                 "expected": "Error test successful."
+            },
+            {
+                "description": "Log access header",
+                "test-name": "/app/error header on debug session",
+                "test-command": "curl %ARGS%",
+                "args": ["-I", "http://localhost:%PORT%/app/error"],
+                "expected": ".*500 Internal Server Error.*"
             }
+
         ]
     },
     {

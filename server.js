@@ -11,7 +11,7 @@ const data_path = ""
 const app = express()
 const port = args["port"] || 5000
 
-if (args["help"]){
+if (args["help"] || args["h"]){
   const text = fs.readFileSync(`${getpath(process.argv[1])}/files/help.txt`, {encoding: "ascii", flag:"r"})
   console.log(text)
   process.exit(0)
@@ -58,7 +58,7 @@ if (args["debug"]=='true' || args["debug"]){
   })
 
   app.get('/app/error', (req, res) => {
-    res.status(200).end("Error test successful.")
+    res.status(500).end("Error test successful.")
   })
 }
 
