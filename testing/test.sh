@@ -8,13 +8,13 @@ echo "Passed Tests:" > tmpfiles/passed; echo "Failed Tests:" > tmpfiles/failed;
 
 # TEST: Run normal server operations
 echo "Running session for ${BLUE}Normal server on random port${NC}\n"
-(node ../server.js --port=1357 > tmpfiles/server_output) & sleep 1
+(node ../server.js --port=37782 > tmpfiles/server_output) & sleep 1
 
 # Writing subtests
 
 # TEST: Run curl on app/flip
 echo "Running session for ${BLUE}app/flip${NC}\n"
-result=$(curl http://localhost:1357/app/flip)
+result=$(curl http://localhost:37782/app/flip)
 expected=$(echo "{['\"]?flip['\"]?:['\"]?(heads|tails)['\"]?}")
 match="$(echo $result | grep -E $expected)"
 [ -n "$match" ] && ( echo "${GREEN}Passed app/flip${NC}" && echo "${GREEN}app/flip${NC}" >> tmpfiles/passed ) || ( echo "${RED}Failed app/flip${NC}" &&  echo "${RED}app/flip${NC}" >> tmpfiles/failed &&
@@ -22,7 +22,7 @@ match="$(echo $result | grep -E $expected)"
 
 # TEST: Get header on app/flip
 echo "Running session for ${BLUE}app/flip header${NC}\n"
-result=$(curl -I http://localhost:1357/app/flip)
+result=$(curl -I http://localhost:37782/app/flip)
 expected=$(echo "200 OK")
 match="$(echo $result | grep -E $expected)"
 [ -n "$match" ] && ( echo "${GREEN}Passed app/flip header${NC}" && echo "${GREEN}app/flip header${NC}" >> tmpfiles/passed ) || ( echo "${RED}Failed app/flip header${NC}" &&  echo "${RED}app/flip header${NC}" >> tmpfiles/failed &&
@@ -30,7 +30,7 @@ match="$(echo $result | grep -E $expected)"
 
 # TEST: Get not found header
 echo "Running session for ${BLUE}not found header${NC}\n"
-result=$(curl -I http://localhost:1357/app/invalid)
+result=$(curl -I http://localhost:37782/app/invalid)
 expected=$(echo "404 [Nn][Oo].*[Nn][Dd]")
 match="$(echo $result | grep -E $expected)"
 [ -n "$match" ] && ( echo "${GREEN}Passed not found header${NC}" && echo "${GREEN}not found header${NC}" >> tmpfiles/passed ) || ( echo "${RED}Failed not found header${NC}" &&  echo "${RED}not found header${NC}" >> tmpfiles/failed &&
@@ -38,23 +38,23 @@ match="$(echo $result | grep -E $expected)"
 
 # TEST: Get not found
 echo "Running session for ${BLUE}not found${NC}\n"
-result=$(curl http://localhost:1357/app/invalid)
+result=$(curl http://localhost:37782/app/invalid)
 expected=$(echo "404 [Nn][Oo].*[Nn][Dd]")
 match="$(echo $result | grep -E $expected)"
 [ -n "$match" ] && ( echo "${GREEN}Passed not found${NC}" && echo "${GREEN}not found${NC}" >> tmpfiles/passed ) || ( echo "${RED}Failed not found${NC}" &&  echo "${RED}not found${NC}" >> tmpfiles/failed &&
   echo "Expected: $expected" >> tmpfiles/failed && echo "Result: $result" >> tmpfiles/failed ) 
 
 # TEST: Random flips
-echo "Running session for ${BLUE}app/flips/75 (generated randomly)${NC}\n"
-result=$(curl http://localhost:1357/app/flips/75)
-expected=$(echo "{['\"]?raw['\"]?:\s*\[((['\"]?tails['\"]?|['\"]?heads['\"]?),?){75}\],\s*['\"]?summary['\"]?:{(['\"]?tails['\"]?:\d{1,6},?|['\"]heads['\"]:\d{1,6},?){1,2}}}")
+echo "Running session for ${BLUE}app/flips/83 (generated randomly)${NC}\n"
+result=$(curl http://localhost:37782/app/flips/83)
+expected=$(echo "{['\"]?raw['\"]?:\s*\[((['\"]?tails['\"]?|['\"]?heads['\"]?),?){83}\],\s*['\"]?summary['\"]?:{(['\"]?tails['\"]?:\d{1,6},?|['\"]heads['\"]:\d{1,6},?){1,2}}}")
 match="$(echo $result | grep -E $expected)"
-[ -n "$match" ] && ( echo "${GREEN}Passed app/flips/75 (generated randomly)${NC}" && echo "${GREEN}app/flips/75 (generated randomly)${NC}" >> tmpfiles/passed ) || ( echo "${RED}Failed app/flips/75 (generated randomly)${NC}" &&  echo "${RED}app/flips/75 (generated randomly)${NC}" >> tmpfiles/failed &&
+[ -n "$match" ] && ( echo "${GREEN}Passed app/flips/83 (generated randomly)${NC}" && echo "${GREEN}app/flips/83 (generated randomly)${NC}" >> tmpfiles/passed ) || ( echo "${RED}Failed app/flips/83 (generated randomly)${NC}" &&  echo "${RED}app/flips/83 (generated randomly)${NC}" >> tmpfiles/failed &&
   echo "Expected: $expected" >> tmpfiles/failed && echo "Result: $result" >> tmpfiles/failed ) 
 
 # TEST: Call Heads
 echo "Running session for ${BLUE}app/flip/call/heads${NC}\n"
-result=$(curl http://localhost:1357/app/flip/call/heads)
+result=$(curl http://localhost:37782/app/flip/call/heads)
 expected=$(echo "(win|lose)")
 match="$(echo $result | grep -E $expected)"
 [ -n "$match" ] && ( echo "${GREEN}Passed app/flip/call/heads${NC}" && echo "${GREEN}app/flip/call/heads${NC}" >> tmpfiles/passed ) || ( echo "${RED}Failed app/flip/call/heads${NC}" &&  echo "${RED}app/flip/call/heads${NC}" >> tmpfiles/failed &&
@@ -62,7 +62,7 @@ match="$(echo $result | grep -E $expected)"
 
 # TEST: Call Tails
 echo "Running session for ${BLUE}app/flip/call/tails${NC}\n"
-result=$(curl http://localhost:1357/app/flip/call/tails)
+result=$(curl http://localhost:37782/app/flip/call/tails)
 expected=$(echo "(win|lose)")
 match="$(echo $result | grep -E $expected)"
 [ -n "$match" ] && ( echo "${GREEN}Passed app/flip/call/tails${NC}" && echo "${GREEN}app/flip/call/tails${NC}" >> tmpfiles/passed ) || ( echo "${RED}Failed app/flip/call/tails${NC}" &&  echo "${RED}app/flip/call/tails${NC}" >> tmpfiles/failed &&
@@ -70,7 +70,7 @@ match="$(echo $result | grep -E $expected)"
 
 # TEST: Call invalid
 echo "Running session for ${BLUE}app/flip/call/invalid${NC}\n"
-result=$(curl http://localhost:1357/app/flip/call/invalid)
+result=$(curl http://localhost:37782/app/flip/call/invalid)
 expected=$(echo "404 [Nn][Oo].*[Nn][Dd]")
 match="$(echo $result | grep -E $expected)"
 [ -n "$match" ] && ( echo "${GREEN}Passed app/flip/call/invalid${NC}" && echo "${GREEN}app/flip/call/invalid${NC}" >> tmpfiles/passed ) || ( echo "${RED}Failed app/flip/call/invalid${NC}" &&  echo "${RED}app/flip/call/invalid${NC}" >> tmpfiles/failed &&
@@ -78,7 +78,7 @@ match="$(echo $result | grep -E $expected)"
 
 # TEST: Log access
 echo "Running session for ${BLUE}/app/log/access on non-debug session${NC}\n"
-result=$(curl http://localhost:1357/app/log/access)
+result=$(curl http://localhost:37782/app/log/access)
 expected=$(echo "404 [Nn][Oo].*[Nn][Dd]")
 match="$(echo $result | grep -E $expected)"
 [ -n "$match" ] && ( echo "${GREEN}Passed /app/log/access on non-debug session${NC}" && echo "${GREEN}/app/log/access on non-debug session${NC}" >> tmpfiles/passed ) || ( echo "${RED}Failed /app/log/access on non-debug session${NC}" &&  echo "${RED}/app/log/access on non-debug session${NC}" >> tmpfiles/failed &&
@@ -86,7 +86,7 @@ match="$(echo $result | grep -E $expected)"
 
 # TEST: Log access
 echo "Running session for ${BLUE}/app/error on non-debug session${NC}\n"
-result=$(curl http://localhost:1357/app/error)
+result=$(curl http://localhost:37782/app/error)
 expected=$(echo "404 [Nn][Oo].*[Nn][Dd]")
 match="$(echo $result | grep -E $expected)"
 [ -n "$match" ] && ( echo "${GREEN}Passed /app/error on non-debug session${NC}" && echo "${GREEN}/app/error on non-debug session${NC}" >> tmpfiles/passed ) || ( echo "${RED}Failed /app/error on non-debug session${NC}" &&  echo "${RED}/app/error on non-debug session${NC}" >> tmpfiles/failed &&
@@ -94,10 +94,10 @@ match="$(echo $result | grep -E $expected)"
 
 
 # Finished subtests
-ps | grep "node ../server.js --port=1357" | grep -v grep | awk '{print $1}' | read pid
+ps | grep "node ../server.js --port=37782" | grep -v grep | awk '{print $1}' | read pid
 ; kill $pid
 result=$(cat tmpfiles/server_output)
-expected=$(echo "App listening on port 1357")
+expected=$(echo "App listening on port 37782")
 match="$(echo $result | grep -E $expected)"
 [ -n "$match" ] && ( echo "${GREEN}Passed Normal server on random port${NC}" && echo "${GREEN}Normal server on random port${NC}" >> tmpfiles/passed ) || ( echo "${RED}Failed Normal server on random port${NC}" &&  echo "${RED}Normal server on random port${NC}" >> tmpfiles/failed &&
   echo "Expected: $expected" >> tmpfiles/failed && echo "Result: $result" >> tmpfiles/failed ) 
@@ -114,13 +114,13 @@ match="$(echo $result | grep -E $expected)"
 
 # TEST: Run server in debug mode
 echo "Running session for ${BLUE}server in debug mode on random port${NC}\n"
-(node ../server.js --debug=true --port=9878 > tmpfiles/server_output) & sleep 1
+(node ../server.js --debug=true --port=9091 > tmpfiles/server_output) & sleep 1
 
 # Writing subtests
 
 # TEST: Log access
 echo "Running session for ${BLUE}/app/log/access on debug session${NC}\n"
-result=$(curl http://localhost:9878/app/log/access)
+result=$(curl http://localhost:9091/app/log/access)
 expected=$(echo "\[\{['\"]id['\"]:.{0,40},['\"]remoteaddr['\"]:.*,['\"]remoteuser['\"]:.*,.*['\"]useragent['\"]:.*\}\]")
 match="$(echo $result | grep -E $expected)"
 [ -n "$match" ] && ( echo "${GREEN}Passed /app/log/access on debug session${NC}" && echo "${GREEN}/app/log/access on debug session${NC}" >> tmpfiles/passed ) || ( echo "${RED}Failed /app/log/access on debug session${NC}" &&  echo "${RED}/app/log/access on debug session${NC}" >> tmpfiles/failed &&
@@ -128,7 +128,7 @@ match="$(echo $result | grep -E $expected)"
 
 # TEST: Log access
 echo "Running session for ${BLUE}/app/error on debug session${NC}\n"
-result=$(curl http://localhost:9878/app/error)
+result=$(curl http://localhost:9091/app/error)
 expected=$(echo "Error test successful.")
 match="$(echo $result | grep -E $expected)"
 [ -n "$match" ] && ( echo "${GREEN}Passed /app/error on debug session${NC}" && echo "${GREEN}/app/error on debug session${NC}" >> tmpfiles/passed ) || ( echo "${RED}Failed /app/error on debug session${NC}" &&  echo "${RED}/app/error on debug session${NC}" >> tmpfiles/failed &&
@@ -136,10 +136,10 @@ match="$(echo $result | grep -E $expected)"
 
 
 # Finished subtests
-ps | grep "node ../server.js --debug=true --port=9878" | grep -v grep | awk '{print $1}' | read pid
+ps | grep "node ../server.js --debug=true --port=9091" | grep -v grep | awk '{print $1}' | read pid
 ; kill $pid
 result=$(cat tmpfiles/server_output)
-expected=$(echo "App listening on port 9878")
+expected=$(echo "App listening on port 9091")
 match="$(echo $result | grep -E $expected)"
 [ -n "$match" ] && ( echo "${GREEN}Passed server in debug mode on random port${NC}" && echo "${GREEN}server in debug mode on random port${NC}" >> tmpfiles/passed ) || ( echo "${RED}Failed server in debug mode on random port${NC}" &&  echo "${RED}server in debug mode on random port${NC}" >> tmpfiles/failed &&
   echo "Expected: $expected" >> tmpfiles/failed && echo "Result: $result" >> tmpfiles/failed ) 
@@ -147,13 +147,13 @@ match="$(echo $result | grep -E $expected)"
 
 # TEST: Run server in log mode
 echo "Running session for ${BLUE}server in log mode on random port${NC}\n"
-(( cp ../databases/access.log ./ ) & ( node ../server.js --log=true --port=4133 > tmpfiles/server_output )) & sleep 1
+(( cp ../databases/access.log ./ ) & ( node ../server.js --log=true --port=26709 > tmpfiles/server_output )) & sleep 1
 
 # Writing subtests
 
 # TEST: Log access
 echo "Running session for ${BLUE}/app/log/access on debug session${NC}\n"
-result=$(curl http://localhost:4133/app/log/access)
+result=$(curl http://localhost:26709/app/log/access)
 expected=$(echo "404 NOT FOUND")
 match="$(echo $result | grep -E $expected)"
 [ -n "$match" ] && ( echo "${GREEN}Passed /app/log/access on debug session${NC}" && echo "${GREEN}/app/log/access on debug session${NC}" >> tmpfiles/passed ) || ( echo "${RED}Failed /app/log/access on debug session${NC}" &&  echo "${RED}/app/log/access on debug session${NC}" >> tmpfiles/failed &&
@@ -161,7 +161,7 @@ match="$(echo $result | grep -E $expected)"
 
 
 # Finished subtests
-ps | grep "node ../server.js --log=true --port=4133" | grep -v grep | awk '{print $1}' | read pid
+ps | grep "node ../server.js --log=true --port=26709" | grep -v grep | awk '{print $1}' | read pid
 ; kill $pid
 result=$(diff ../access.log ./access.log)
 expected=$(echo ".+")
